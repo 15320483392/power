@@ -1,0 +1,27 @@
+logging:
+    level:
+        com.tsinghua.eureka.center: DEBUG
+    file: /data/center.log
+
+spring:
+  application:
+    name: center
+  profiles:
+    active: s1
+server:
+  port: 8761 #启动端口
+eureka:
+  client:
+    registerWithEureka: false  #false:不作为一个客户端注册到注册中心
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${spring.cloud.client.ip-address}:${server.port}/eureka/
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    hostname: ${spring.cloud.client.ip-address}
+management:
+  endpoints:
+    web:
+      exposure:
+        #actuator监控中心，开放所有权限
+        include: '*'

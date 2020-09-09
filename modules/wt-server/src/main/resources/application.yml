@@ -1,0 +1,55 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: app-server
+  datasource:
+    name: awt-server
+    url: jdbc:mysql://127.0.0.1:33006/wt_cloud_pro?characterEncoding=UTF-8&allowMultiQueries=true
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: ${REDIS_PORT:6379}
+    password:
+    sysName: wt-server
+    enable: true
+    jedis:
+      pool:
+        maxActive: 300
+        maxIdle: 100
+        minIdle: 1000
+  thymeleaf:
+    cache: false
+    check-template-location: true
+    servlet:
+      content-type: text/html
+    enabled: true
+    encoding: UTF-8
+    mode: LEGACYHTML5
+    prefix: classpath:/templates/
+    suffix: .html
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    status-page-url: http://${spring.cloud.client.ip-address}:${server.port}/swagger-ui.html
+  client:
+    serviceUrl:
+      defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/
+
+security:
+  oauth2:
+    client:
+      client-id: hgsw_pc_admin_client
+      client-secret: hgsw-pc-admin-client-20200309
+      user-authorization-uri: http://localhost:8762/oauth/authorize
+      access-token-uri: http://localhost:8762/oauth/token
+    resource:
+      jwt:
+        key-uri: http://localhost:8762/oauth/token_key
